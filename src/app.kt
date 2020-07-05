@@ -18,8 +18,8 @@ class Huffman(var valores: IntArray){
 
     }
     fun ordenarListaValores(){
-        for(i in 1..valores.size-1){
-            for(j in 1..valores.size){
+        for(i in 0..valores.size-2){
+            for(j in 0..valores.size-1){
                 if(this.valores[i]>this.valores[j]){
                     var temp = this.valores[i]
                     this.valores[i] = this.valores[j]
@@ -60,5 +60,7 @@ class ArbolHF(val valores: IntArray){
 fun main(){
     val valores = intArrayOf(1,2,2,1,3,4,2,1,2,3); //Se usa val porque no cambiara
     val hc = Huffman(valores)
-
+    for(i in 1..5){
+        println(i)
+    }
 }
