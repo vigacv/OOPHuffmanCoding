@@ -8,6 +8,9 @@ class Huffman(var valores: IntArray){
     fun crearListaFrecuencias(){
         this.listaFrecuencias = ListaF(this.valores)
     }
+    fun mostrarListaFrecuencias(){
+        this.listaFrecuencias?.mostrarListaF()
+    }
     fun generarArbolHuffman(){
         this.arbolH?.generarArbolHuffman()
     }
@@ -18,8 +21,8 @@ class Huffman(var valores: IntArray){
 
     }
     fun ordenarListaValores(){
-        for(i in 0..valores.size-2){
-            for(j in 0..valores.size-1){
+        for(i in 0..this.valores.size-2){
+            for(j in i+1..this.valores.size-1){
                 if(this.valores[i]>this.valores[j]){
                     var temp = this.valores[i]
                     this.valores[i] = this.valores[j]
@@ -42,6 +45,40 @@ class NodoF(frecuencia: Int, valor: Int): Nodo(frecuencia, valor){
 
 class ListaF(val valores: IntArray){
     var primerNodoF: NodoF? = null;
+    init{
+        generarListaF()
+    }
+    fun generarListaF(){
+        var frec = 0
+        var valor = this.valores[0]
+        var nodoPrevio: NodoF? = null
+        for(i in 0..this.valores.size-1){
+            if(this.valores[i] == valor){
+                frec++
+            }else{
+                var nuevoNodo = NodoF(frec,valor)
+                valor = this.valores[i]
+                frec = 1
+                if(this.primerNodoF == null){
+                    this.primerNodoF = nuevoNodo
+                }else{
+                    nodoPrevio?.sigtNodo = nuevoNodo
+                }
+                nodoPrevio = nuevoNodo
+            }
+            if(i == this.valores.size-1){
+                var nuevoNodo = NodoF(frec,valor)
+                nodoPrevio?.sigtNodo = nuevoNodo
+            }
+        }
+    }
+    fun mostrarListaF(){
+        var pNodo = this.primerNodoF
+        while(pNodo != null){
+            println("${pNodo.frecuencia}:${pNodo.valor}")
+            pNodo = pNodo.sigtNodo
+        }
+    }
 }
 
 class NodoArbol(frecuencia: Int, valor: Int) : Nodo(frecuencia, valor){
@@ -58,9 +95,12 @@ class ArbolHF(val valores: IntArray){
 }
 
 fun main(){
-    val valores = intArrayOf(1,2,2,1,3,4,2,1,2,3); //Se usa val porque no cambiara
-    val hc = Huffman(valores)
-    for(i in 1..5){
-        println(i)
-    }
+    val vals = intArrayOf(1,2,2,1,3,4,2,1,2,3); //Se usa val porque no cambiara
+    val hf = Huffman(vals.copyOf()) //si no se usa copy modifica a vals
+    for(v in vals) print("$v ")
+    println()
+    for(v in hf.valores) print("$v ")
+    println()
+    hf.crearListaFrecuencias()
+    hf.mostrarListaFrecuencias()
 }
