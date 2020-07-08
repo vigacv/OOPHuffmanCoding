@@ -1,13 +1,13 @@
 class Huffman(var valores: IntArray){
     //var si cambia de valor
     var listaFrecuencias: ListaF? = null
-    var arbolH: ArbolHF? = ArbolHF(valores)
+    var arbolH: ArbolHF? = null
     init{
         ordenarListaValores()
-    }
-    fun crearListaFrecuencias(){
         this.listaFrecuencias = ListaF(this.valores)
+        this.arbolH = ArbolHF(this.listaFrecuencias!!)
     }
+
     fun mostrarListaFrecuencias(){
         this.listaFrecuencias?.mostrarListaF()
     }
@@ -33,7 +33,7 @@ class Huffman(var valores: IntArray){
     }
 }
 
-open class Nodo(val frecuencia: Int, val valor: Int?){
+open class Nodo(val frecuencia: Int, val valor: Int){
     //open es que se puede heredar
 
 }
@@ -45,6 +45,7 @@ class NodoF(frecuencia: Int, valor: Int): Nodo(frecuencia, valor){
 
 class ListaF(val valores: IntArray){
     var primerNodoF: NodoF? = null;
+    var cant: Int = 0
     init{
         generarListaF()
     }
@@ -65,10 +66,12 @@ class ListaF(val valores: IntArray){
                     nodoPrevio?.sigtNodo = nuevoNodo
                 }
                 nodoPrevio = nuevoNodo
+                this.cant++
             }
             if(i == this.valores.size-1){
                 var nuevoNodo = NodoF(frec,valor)
                 nodoPrevio?.sigtNodo = nuevoNodo
+                this.cant++
             }
         }
     }
@@ -81,17 +84,51 @@ class ListaF(val valores: IntArray){
     }
 }
 
-class NodoArbol(frecuencia: Int, valor: Int) : Nodo(frecuencia, valor){
-    var subArbolIzq: NodoArbol? = null
-    var subArbolDer: NodoArbol? = null
-}
+class NodoArbol(frecuencia: Int, valor: Int, var subArbolIzq: NodoArbol? = null,
+                var subArbolDer: NodoArbol? = null) : Nodo(frecuencia, valor)
 
-class ArbolHF(val valores: IntArray){
-    fun generarArbolHuffman() {
-        TODO("Not yet implemented")
-    }
-
+class ArbolHF(val listaFrec: ListaF){
+    var listaArboles = ArrayList<NodoArbol?>()
     var raizArbol: NodoArbol? = null
+    //crea un array de tipo NodoARbol del tamaño de la lista de frec e inicializa todos los valores en null
+    init{
+        crearListaArboles()
+    }
+    fun crearListaArboles(){
+        var pNodo = listaFrec.primerNodoF
+        for(i in 0..this.listaFrec.cant-1){
+            var newArbol = pNodo?.let{NodoArbol(it.frecuencia,it.valor)}
+            //let ejecuta todo el bloque y lo hace solo si pNodo es diferende de null
+            listaArboles.add(newArbol)
+            pNodo = pNodo?.sigtNodo
+        }
+    }
+    fun mostrarListaArboles(){
+        for(a in this.listaArboles){
+            println("${a?.frecuencia}:${a?.valor}")
+        }
+    }
+    fun ordenarListaArboles(){
+        for(i in 0..this.listaArboles.size-2){
+            for(j in i+1..this.listaArboles.size-1){
+                if(this.listaArboles[j]?.frecuencia!! < this.listaArboles[i]?.frecuencia!!){
+                    var temp = this.listaArboles[i]
+                    this.listaArboles[i] = this.listaArboles[j]
+                    this.listaArboles[j] = temp
+                }
+            }
+        }
+    }
+    fun generarArbolHuffman() {
+        while(this.listaArboles.size != 1){
+            ordenarListaArboles()
+            var suma = this.listaArboles[0]?.frecuencia!! + this.listaArboles[1]?.frecuencia!!
+            var newArbol = NodoArbol(suma,0,this.listaArboles[0], this.listaArboles[1])
+            this.listaArboles.add(newArbol)
+            this.listaArboles.removeAt(0); this.listaArboles.removeAt(1)
+        }
+        this.raizArbol = this.listaArboles[0]
+    }
 }
 
 fun main(){
@@ -100,7 +137,12 @@ fun main(){
     for(v in vals) print("$v ")
     println()
     for(v in hf.valores) print("$v ")
-    println()
-    hf.crearListaFrecuencias()
+    println("Lista de frecuencias: ")
     hf.mostrarListaFrecuencias()
+    println("Tamaño de la lista de frecuencias: ${hf.listaFrecuencias?.cant}")
+    println("Lista de arboles:")
+    hf.arbolH?.mostrarListaArboles()
+    println()
+    hf.generarArbolHuffman()
+    println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
 }
