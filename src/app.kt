@@ -35,7 +35,6 @@ class Huffman(var valores: IntArray){
 
 open class Nodo(val frecuencia: Int, val valor: Int){
     //open es que se puede heredar
-
 }
 
 class NodoF(frecuencia: Int, valor: Int): Nodo(frecuencia, valor){
@@ -124,8 +123,12 @@ class ArbolHF(val listaFrec: ListaF){
             ordenarListaArboles()
             var suma = this.listaArboles[0]?.frecuencia!! + this.listaArboles[1]?.frecuencia!!
             var newArbol = NodoArbol(suma,0,this.listaArboles[0], this.listaArboles[1])
+            println()
+            mostrarListaArboles()
+            println(suma)
+            println()
+            this.listaArboles.removeAt(0); this.listaArboles.removeAt(0)
             this.listaArboles.add(newArbol)
-            this.listaArboles.removeAt(0); this.listaArboles.removeAt(1)
         }
         this.raizArbol = this.listaArboles[0]
     }
@@ -145,4 +148,5 @@ fun main(){
     println()
     hf.generarArbolHuffman()
     println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
+    println(hf.arbolH?.raizArbol?.subArbolDer?.subArbolDer?.subArbolIzq?.valor)
 }
