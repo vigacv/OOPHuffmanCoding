@@ -14,11 +14,11 @@ class Huffman(var valores: IntArray){
     fun generarArbolHuffman(){
         this.arbolH?.generarArbolHuffman()
     }
-    fun codificar(x: Int){
-
+    fun codificar(x: Int): String? {
+        return this.arbolH?.codificar(x)
     }
-    fun decodificar(cod: Int){
-
+    fun decodificar(cod: String): String?{
+        return this.arbolH?.decodificar(cod)
     }
     fun ordenarListaValores(){
         for(i in 0..this.valores.size-2){
@@ -123,14 +123,50 @@ class ArbolHF(val listaFrec: ListaF){
             ordenarListaArboles()
             var suma = this.listaArboles[0]?.frecuencia!! + this.listaArboles[1]?.frecuencia!!
             var newArbol = NodoArbol(suma,0,this.listaArboles[0], this.listaArboles[1])
-            println()
-            mostrarListaArboles()
-            println(suma)
-            println()
             this.listaArboles.removeAt(0); this.listaArboles.removeAt(0)
             this.listaArboles.add(newArbol)
         }
         this.raizArbol = this.listaArboles[0]
+    }
+
+    fun codificar(x: Int, pArbol: NodoArbol? = this.raizArbol, codigo: String = ""): String {
+        if(pArbol?.valor == x){
+            return codigo
+        }else{
+            if(estaEnArbol(x,pArbol?.subArbolIzq)){
+                return codificar(x,pArbol?.subArbolIzq,codigo+"0")
+            }else if(estaEnArbol(x,pArbol?.subArbolDer)){
+                return codificar(x,pArbol?.subArbolDer, codigo+"1")
+            }else{
+                return "No se encuentra el valor"
+            }
+        }
+    }
+
+    private fun estaEnArbol(x: Int, pArbol: NodoArbol?): Boolean {
+        if(pArbol == null){
+            return false
+        }else{
+            if(pArbol.valor == x){
+                return true
+            }else return estaEnArbol(x,pArbol.subArbolIzq) || estaEnArbol(x,pArbol.subArbolDer)
+        }
+    }
+
+    fun decodificar(cod: String): String {
+        var pArbol = this.raizArbol
+        for(c in cod){
+            if(c == '0'){
+                pArbol = pArbol?.subArbolIzq
+            }else{
+                pArbol = pArbol?.subArbolDer
+            }
+        }
+        if(pArbol?.valor != 0){
+            return pArbol?.valor.toString()
+        }else{
+            return "*"
+        }
     }
 }
 
@@ -148,5 +184,8 @@ fun main(){
     println()
     hf.generarArbolHuffman()
     println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
-    println(hf.arbolH?.raizArbol?.subArbolDer?.subArbolDer?.subArbolIzq?.valor)
+    println()
+    println("Valor 4 codificado: ${hf.codificar(4)}")
+    println()
+    println("Valor 110 decodificado: ${hf.decodificar("110")}")
 }
