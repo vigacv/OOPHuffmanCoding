@@ -1,3 +1,8 @@
+import java.time.LocalTime
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.random.Random
+
 class Huffman(var valores: IntArray){
     //var si cambia de valor
     var listaFrecuencias: ListaF? = null
@@ -170,22 +175,27 @@ class ArbolHF(val listaFrec: ListaF){
     }
 }
 
+fun generarArrayAleatorio(tam: Int): IntArray{
+    return IntArray(tam,{i -> (0..9).random()})
+}
+
 fun main(){
-    val vals = intArrayOf(1,2,2,1,3,4,2,1,2,3); //Se usa val porque no cambiara
-    val hf = Huffman(vals.copyOf()) //si no se usa copy modifica a vals
-    for(v in vals) print("$v ")
-    println()
-    for(v in hf.valores) print("$v ")
-    println("Lista de frecuencias: ")
-    hf.mostrarListaFrecuencias()
-    println("Tamaño de la lista de frecuencias: ${hf.listaFrecuencias?.cant}")
-    println("Lista de arboles:")
-    hf.arbolH?.mostrarListaArboles()
-    println()
-    hf.generarArbolHuffman()
-    println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
-    println()
-    println("Valor 4 codificado: ${hf.codificar(4)}")
-    println()
-    println("Valor 110 decodificado: ${hf.decodificar("110")}")
+    val sc = Scanner(System.`in`)
+    println("Tamaño de la entrada: "); val n = sc.nextInt()
+    println("Numero de repeticiones: "); val rep = sc.nextInt()
+    for(i in 1..rep){
+        println()
+        val vals = generarArrayAleatorio(n)
+        val inicio = System.currentTimeMillis()
+        val hf = Huffman(vals.copyOf())
+        hf.generarArbolHuffman()
+        println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
+        println("Tiempo de generacion del AH: ${System.currentTimeMillis()/1000 - inicio/1000}")
+        val valorRand = vals[(0..vals.size-1).random()]
+        val codRand = hf.codificar(valorRand)
+        println("Valor $valorRand codificado: $codRand")
+        println("Tiempo hasta codificar: ${System.currentTimeMillis()/1000 - inicio/1000}")
+        println("Valor $codRand decodificado: ${hf.decodificar(codRand!!)}")
+        println("Tiempo hasta decodificar: ${System.currentTimeMillis()/1000 - inicio/1000}")
+    }
 }
