@@ -176,7 +176,7 @@ class ArbolHF(val listaFrec: ListaF){
 }
 
 fun generarArrayAleatorio(tam: Int): IntArray{
-    return IntArray(tam,{i -> (0..9).random()})
+    return IntArray(tam,{i -> (0..127).random()})
 }
 
 fun main(){
@@ -186,16 +186,18 @@ fun main(){
     for(i in 1..rep){
         println()
         val vals = generarArrayAleatorio(n)
-        val inicio = System.currentTimeMillis()
+        var inicio = System.nanoTime()/1000
         val hf = Huffman(vals.copyOf())
         hf.generarArbolHuffman()
         println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
-        println("Tiempo de generacion del AH: ${System.currentTimeMillis()/1000 - inicio/1000}")
+        println("Tiempo de generacion del AH: ${System.nanoTime()/1000 - inicio} ms")
         val valorRand = vals[(0..vals.size-1).random()]
+        inicio = System.nanoTime()/1000
         val codRand = hf.codificar(valorRand)
         println("Valor $valorRand codificado: $codRand")
-        println("Tiempo hasta codificar: ${System.currentTimeMillis()/1000 - inicio/1000}")
+        println("Tiempo para codificar: ${System.nanoTime()/1000 - inicio} ms")
+        inicio = System.nanoTime()/1000
         println("Valor $codRand decodificado: ${hf.decodificar(codRand!!)}")
-        println("Tiempo hasta decodificar: ${System.currentTimeMillis()/1000 - inicio/1000}")
+        println("Tiempo para decodificar: ${System.nanoTime()/1000- inicio} ms")
     }
 }
