@@ -186,18 +186,18 @@ fun main(){
     for(i in 1..rep){
         println()
         val vals = generarArrayAleatorio(n)
-        var inicio = System.nanoTime()/1000
+        var inicio = System.currentTimeMillis()
         val hf = Huffman(vals.copyOf())
         hf.generarArbolHuffman()
         println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
-        println("Tiempo de generacion del AH: ${System.nanoTime()/1000 - inicio} ms")
-        val valorRand = vals[(0..vals.size-1).random()]
+        println("Tiempo de generacion del AH: ${System.currentTimeMillis() - inicio} ms")
+        /*val valorRand = vals[(0..vals.size-1).random()]
         inicio = System.nanoTime()/1000
         val codRand = hf.codificar(valorRand)
         println("Valor $valorRand codificado: $codRand")
         println("Tiempo para codificar: ${System.nanoTime()/1000 - inicio} ms")
         inicio = System.nanoTime()/1000
         println("Valor $codRand decodificado: ${hf.decodificar(codRand!!)}")
-        println("Tiempo para decodificar: ${System.nanoTime()/1000- inicio} ms")
+        println("Tiempo para decodificar: ${System.nanoTime()/1000- inicio} ms")*/
     }
 }
