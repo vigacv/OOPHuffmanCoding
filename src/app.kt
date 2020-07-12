@@ -122,7 +122,7 @@ class ArbolHF(val listaFrec: ListaF){
         while(this.listaArboles.size != 1){
             ordenarListaArboles()
             var suma = this.listaArboles[0]?.frecuencia!! + this.listaArboles[1]?.frecuencia!!
-            var newArbol = NodoArbol(suma,0,this.listaArboles[0], this.listaArboles[1])
+            var newArbol = NodoArbol(suma,-1,this.listaArboles[0], this.listaArboles[1])
             this.listaArboles.removeAt(0); this.listaArboles.removeAt(0)
             this.listaArboles.add(newArbol)
         }
