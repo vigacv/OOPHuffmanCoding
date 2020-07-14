@@ -170,8 +170,8 @@ class ArbolHF(val listaFrec: ListaF){
         }
         return (pArbol?.valor.let{
             if(it == -1){"No es un codigo prefijo"}
-            else it
-        } ?: "No se encontro el codigo").toString()
+            else it // it = pArbol?.valor
+        } ?: "No se encontro el codigo").toString() //<-- si pArbol es null devuelve esto
     }
 }
 
