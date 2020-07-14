@@ -187,15 +187,13 @@ fun main(){
     for(i in 1..rep){
         //println()
         val vals = generarArrayAleatorio(n)
-        if(i>2){
-            val inicio = System.currentTimeMillis()
-            val hf = Huffman(vals.copyOf())
-            hf.generarArbolHuffman()
-            //println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
-            var tiempo = System.currentTimeMillis() - inicio
-            println("Tiempo de generacion del AH: $tiempo ms")
-            suma += tiempo
-        }
+        val inicio = System.currentTimeMillis()
+        val hf = Huffman(vals.copyOf())
+        hf.generarArbolHuffman()
+        //println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
+        var tiempo = System.currentTimeMillis() - inicio
+        println("Tiempo de generacion del AH: $tiempo ms")
+        suma += tiempo
     }
     println("Promedio total: ${suma/rep}")
 }
