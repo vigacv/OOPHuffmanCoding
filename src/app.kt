@@ -155,17 +155,32 @@ class ArbolHF(val listaFrec: ListaF){
 
     fun decodificar(cod: String): String {
         var pArbol = this.raizArbol
+        var v = false //v es validar
         for(c in cod){
             if(c == '0'){
-                pArbol = pArbol?.subArbolIzq
+                if(pArbol?.subArbolIzq!=null) {
+                    pArbol = pArbol?.subArbolIzq
+                }else{
+                    v=true
+                    break
+                }
             }else{
-                pArbol = pArbol?.subArbolDer
+                if(pArbol?.subArbolDer!=null){
+                    pArbol = pArbol?.subArbolDer
+                }else{
+                    v=true
+                    break
+                }
             }
         }
-        if(pArbol?.valor != 0){
-            return pArbol?.valor.toString()
-        }else{
-            return "*"
+        if(v==true){
+            return "No se puede decodificar"
+        }else {
+            if (pArbol?.valor != -1) {
+                return pArbol?.valor.toString()
+            } else {
+                return "*"
+            }
         }
     }
 }
@@ -185,7 +200,7 @@ fun main(){
     hf.generarArbolHuffman()
     println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
     println()
-    println("Valor 4 codificado: ${hf.codificar(4)}")
+    println("Valor 0 codificado: ${hf.codificar(0)}")
     println()
-    println("Valor 110 decodificado: ${hf.decodificar("110")}")
+    println("Valor 101 decodificado: ${hf.decodificar("101")}")
 }
