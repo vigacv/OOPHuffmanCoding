@@ -1,3 +1,6 @@
+import java.util.*
+import kotlin.collections.ArrayList
+
 class Huffman(var valores: IntArray){
     //var si cambia de valor
     var listaFrecuencias: ListaF? = null
@@ -158,34 +161,22 @@ class ArbolHF(val listaFrec: ListaF){
         var v = false //v es validar
         for(c in cod){
             if(c == '0'){
-                if(pArbol?.subArbolIzq!=null) {
-                    pArbol = pArbol?.subArbolIzq
-                }else{
-                    v=true
-                    break
-                }
+                pArbol = pArbol?.subArbolIzq
+            }else if(c == '1'){
+                pArbol = pArbol?.subArbolDer
             }else{
-                if(pArbol?.subArbolDer!=null){
-                    pArbol = pArbol?.subArbolDer
-                }else{
-                    v=true
-                    break
-                }
+                return "Solo se pueden decodificar codigos binarios"
             }
         }
-        if(v==true){
-            return "No se puede decodificar"
-        }else {
-            if (pArbol?.valor != -1) {
-                return pArbol?.valor.toString()
-            } else {
-                return "*"
-            }
-        }
+        return (pArbol?.valor.let{
+            if(it == -1){"No es un codigo prefijo"}
+            else it
+        } ?: "No se encontro el codigo").toString()
     }
 }
 
 fun main(){
+    var sc = Scanner(System.`in`)
     val vals = intArrayOf(1,2,2,1,3,4,2,1,2,3); //Se usa val porque no cambiara
     val hf = Huffman(vals.copyOf()) //si no se usa copy modifica a vals
     for(v in vals) print("$v ")
@@ -200,7 +191,15 @@ fun main(){
     hf.generarArbolHuffman()
     println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
     println()
-    println("Valor 0 codificado: ${hf.codificar(0)}")
-    println()
-    println("Valor 101 decodificado: ${hf.decodificar("101")}")
+    println("Ingrese el valor a codificar: ")
+    try{
+        val valorACodif = sc.nextInt()
+        println("Valor $valorACodif codificado: ${hf.codificar(valorACodif)}")
+    }catch(err: InputMismatchException){
+        println("Debe ingresar un entero")
+    }
+    println("Ingrese un codigo para decodificarlo a su valor: ")
+    sc = Scanner(System.`in`)
+    val codInp = sc.nextLine()
+    println("Codigo $codInp decodificado: ${hf.decodificar(codInp)}")
 }
