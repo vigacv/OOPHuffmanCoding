@@ -185,15 +185,15 @@ fun main(){
     println("Numero de repeticiones: "); val rep = sc.nextInt()
     var suma: Long = 0
     for(i in 1..rep){
-        //println()
+        println()
         val vals = generarArrayAleatorio(n)
         val inicio = System.currentTimeMillis()
         val hf = Huffman(vals.copyOf())
         hf.generarArbolHuffman()
-        //println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
+        println("Raiz del arbol de Huffman: ${hf.arbolH?.raizArbol?.frecuencia}:${hf.arbolH?.raizArbol?.valor}")
         var tiempo = System.currentTimeMillis() - inicio
         println("Tiempo de generacion del AH: $tiempo ms")
         suma += tiempo
     }
-    println("Promedio total: ${suma/rep}")
+    println("\n*Promedio total: ${suma/rep}")
 }
